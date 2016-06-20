@@ -37,7 +37,7 @@ void rational_assign(rational_t *r, int64_t n, int64_t d)
 		d = -d;
 	}
 
-	int64_t const g = gcd((n), d);
+	int64_t const g = gcd(abs64(n), d);
 	r->n = n/g;
 	r->d = d/g;
 }
@@ -147,6 +147,10 @@ void var_tex(
 		printf("%s%s", pre0, post);
 	} else if (v.p0 != 0) {
 		printf("%s^%d%s", pre0, v.p0, post);
+	}
+
+	if (v.p0 != 0 && v.p1 != 0) {
+		printf("\\,");
 	}
 
 	if (v.p1 == 1) {
@@ -393,6 +397,9 @@ int main(int argc, char *argv[])
 		printf("\\pi}}");
 
 		polynomial_tex(&q, "\\sin", "\\cos", "\\phi");
+		if (q.size == 1 && p.size == 1) {
+			printf("\\,");
+		}
 		polynomial_tex(&p, "\\sin", "\\cos", "\\theta");
 
 		printf("\\\\\n");
